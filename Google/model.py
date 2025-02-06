@@ -6,9 +6,9 @@ def create_model(inputLen):
         layers.Input(shape=[inputLen]),
 
         # Ajout de couches denses intermédiaires
-        layers.Dense(32, activation='relu'),
-        # layers.BatchNormalization(),
-        # layers.Dropout(0.2),
+        layers.Dense(16, activation='relu'),
+        layers.BatchNormalization(),
+        layers.Dropout(0.2),
 
         # Couche de sortie
         layers.Dense(1, activation='sigmoid')
@@ -16,7 +16,7 @@ def create_model(inputLen):
 
     model.compile(
         loss='binary_crossentropy',
-        optimizer= optimizers.Adam(learning_rate=1e-4,  clipnorm=1.0),
+        optimizer= optimizers.Adam(learning_rate=1e-4),
         metrics=['accuracy']
     )
 
@@ -30,8 +30,8 @@ def train_model(model, X_train, y_train):
     print(f"Y_train: {y_train}")
     history = model.fit(
         X_train, y_train,
-        epochs=20,
-        batch_size=32,
+        epochs=2,
+        batch_size=16,
         validation_split=0.2,
         # callbacks=[
         #     tf.keras.callbacks.EarlyStopping(
