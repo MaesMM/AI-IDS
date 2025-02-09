@@ -36,23 +36,18 @@ def main():
     model = create_model(len(X_train.columns))
 
     X_train.replace([np.inf, -np.inf], np.finfo(np.float16).max, inplace=True)
-    
-    # X_train = tf.convert_to_tensor(X_train, dtype=tf.float16)
-    # X_test = tf.convert_to_tensor(X_test, dtype=tf.float16)
-    # Replace infinite values with a large finite number (e.g., max float)
-        
+            
+    if verbose:
+        print(f"check for NAN value: {cleaned_features.isnull().sum()} FIN_NAN")  # Check for NaN values
 
-    print(f"check for NAN value: {cleaned_features.isnull().sum()} FIN_NAN")  # Check for NaN values
-
-    print("Check for NaN values in X_train:", np.isnan(X_train).any())
-    print("Check for infinite values in X_train:", np.isinf(X_train).any())
-    print("Check for NaN values in y_train:", np.isnan(y_train).any())
-    print("Check for infinite values in y_train:", np.isinf(y_train).any())
+        print("Check for NaN values in X_train:", np.isnan(X_train).any())
+        print("Check for infinite values in X_train:", np.isinf(X_train).any())
+        print("Check for NaN values in y_train:", np.isnan(y_train).any())
+        print("Check for infinite values in y_train:", np.isinf(y_train).any())
 
     train_model(model, X_train, y_train)
 
     accuracy = model.evaluate(x=X_test, y=y_test, verbose=2)
-    y_pred = model.predict(X_test)
 
 
 if(__name__ == "__main__"):
