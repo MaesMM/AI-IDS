@@ -47,7 +47,11 @@ def clean_dataset(df, labels_to_exclude, threshold_null=0.9, remove_duplicates=T
 
 
 def preprocess_dataset(df, test_size=0.2, random_state=89, label: str = 'benign' ,verbose=True):
-    labels = (df.iloc[:, -1].str.lower() != label).astype(int)
+    if not (df.iloc[:, -1].apply(type).isin([int, str]).all()):
+        raise Exception("Data labels can have only two different values and be either strings or booleans") 
+    elif df.iloc[:, -1].apply(type).eq(str).all():
+        labels = (df.iloc[:, -1].str.lower() != label).astype(int)
+
     features_df = df.iloc[:, :-1]
 
     features_df = features_df.fillna(0)
