@@ -1,0 +1,22 @@
+name: net-lab
+services:
+    snort:
+      container_name: snort3
+      hostname: snort3
+      user: snorty
+      working_dir: /home/snorty
+      restart: unless-stopped
+      image: snort
+      build:
+        context: .
+        dockerfile: snort.dockerfile
+      networks:
+        - internal-side
+      # volumes:
+      # ports:
+
+networks:
+  internet-side: {}
+  internal-side: {}
+
+# volumes:
