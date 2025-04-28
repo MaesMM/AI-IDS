@@ -23,7 +23,6 @@ RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https:
     flex \
     bison \
     libpcap-dev \
-    # libpcre3 \
     libpcre2-dev \
     libdnet-dev \
     libdumbnet-dev \
@@ -99,8 +98,9 @@ RUN git clone https://github.com/snort3/snort3.git /tmp/snort3 && \
 RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s3/lib/daq'" >> ~/.bashrc
 
 # Copy custom rules and scripts
-COPY local.rules /usr/local/src/libml/examples/classifier/local.rules
+COPY local.rules /usr/local/snort/etc/snort/
 COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
+COPY entrypoint.sh . 
 
-# Default command to open a shell
-CMD ["/bin/bash"]
+RUN chmod +x /usr/local/entrypoint.sh
+CMD ["/usr/local/entrypoint.sh"]
