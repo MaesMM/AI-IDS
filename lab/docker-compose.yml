@@ -2,12 +2,13 @@ version: '3.8'
 
 services:
   snort:
-    image: localhost/snort3ml
+    image: snort3ml
     container_name: snort3ml
     volumes:
-      - snort_data:/etc/snort
+      - ./snort/host-volume:/usr/local/snort/etc/snort/docker-volume:ro
     networks:
       - private_network
+    stdin_open: true
 
   kali:
     image: kalilinux/kali-rolling
@@ -21,5 +22,4 @@ networks:
   private_network:
     driver: bridge
 
-volumes:
-  snort_data:
+
