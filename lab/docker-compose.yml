@@ -1,22 +1,25 @@
-name: net-lab
+version: '3.8'
+
 services:
-    snort:
-      container_name: snort3
-      hostname: snort3
-      user: snorty
-      working_dir: /home/snorty
-      restart: unless-stopped
-      image: snort
-      build:
-        context: .
-        dockerfile: snort.dockerfile
-      networks:
-        - internal-side
-      # volumes:
-      # ports:
+  snort:
+    image: localhost/snort3ml
+    container_name: snort3ml
+    volumes:
+      - snort_data:/etc/snort
+    networks:
+      - private_network
+
+  kali:
+    image: kalilinux/kali-rolling
+    container_name: kali
+    networks:
+      - private_network
+    tty: true
+    stdin_open: true
 
 networks:
-  internet-side: {}
-  internal-side: {}
+  private_network:
+    driver: bridge
 
-# volumes:
+volumes:
+  snort_data:
