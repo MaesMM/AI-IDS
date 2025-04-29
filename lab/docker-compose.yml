@@ -5,7 +5,7 @@ services:
     image: snort3ml
     container_name: snort3ml
     volumes:
-      - ./snort/host-volume:/usr/local/snort/etc/snort/docker-volume:ro
+      - ./snort/host-volume:/usr/local/snort/etc/snort/docker-volume:ro #rules 
     networks:
       - private_network
     stdin_open: true

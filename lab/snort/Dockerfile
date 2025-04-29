@@ -100,6 +100,8 @@ RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s
 # Copy custom rules and scripts
 COPY local.rules /usr/local/snort/etc/snort/
 COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
+RUN rm /usr/local/snort/etc/snort/snort.lua
+COPY config.lua /usr/local/snort/etc/snort/snort.lua
 COPY entrypoint.sh . 
 
 RUN chmod +x /usr/local/entrypoint.sh
