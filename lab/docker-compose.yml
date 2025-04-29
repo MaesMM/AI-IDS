@@ -1,9 +1,11 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   snort:
-    image: snort3ml
-    container_name: snort3ml
+    build: 
+      context: ./snort
+      dockerfile: Dockerfile
+    container_name: snort
     volumes:
       - ./snort/host-volume:/usr/local/snort/etc/snort/docker-volume:ro #rules 
     networks:
@@ -17,6 +19,15 @@ services:
       - private_network
     tty: true
     stdin_open: true
+
+  web:
+    image: bkimminich/juice-shop
+    container_name: juice
+    networks:
+      - private_network
+    volumes:
+      - ./web/default.yml:/juice-shop/config/myConfig.yml
+    restart: always
 
 networks:
   private_network:
