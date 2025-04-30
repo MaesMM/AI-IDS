@@ -6,6 +6,6 @@ pip install scapy
 python3 pcapgen.py
 
 # Better transfert the trained model
-# pip install numpy tensorflow
+# pip install numpy tensorflow ...
 
 /bin/bash

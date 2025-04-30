@@ -28,6 +28,8 @@ services:
     volumes:
       - ./web/default.yml:/juice-shop/config/myConfig.yml
     restart: always
+    environment:
+      PORT: "80"
 
 networks:
   private_network:
