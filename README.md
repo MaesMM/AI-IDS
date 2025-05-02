@@ -19,7 +19,7 @@ docker exec -it <container name> bash --login
 
 ## Architecture :
 
-![image.png](Readme%20NGS-IDS%201e7be3a0aee1807eaa62d61d0f6c1502/image.png)
+![Architecture](Architecture.png)
 
 ## Lancement de snort dans la console
 
