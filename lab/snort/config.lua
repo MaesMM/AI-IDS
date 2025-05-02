@@ -189,7 +189,7 @@ ips =
     -- note that rules files can include other rules files
     -- (see also related path vars at the top of snort_defaults.lua)
 
-    variables = default_variables
+    variables = default_variables,
     rules = [[
         include /usr/local/snort/etc/snort/local.rules
         include /usr/local/snort/etc/snort/docker-volume/snort3-community.rules
