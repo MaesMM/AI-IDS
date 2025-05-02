@@ -43,6 +43,9 @@ RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https:
     iputils-ping \
     curl \
     tcpdump \
+    bash \
+    libreadline-dev \
+    libncurses-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
@@ -95,7 +98,7 @@ RUN git clone https://github.com/snort3/snort3.git /tmp/snort3 && \
     rm -rf /tmp/snort3
 
 # Create an alias for Snort including the DAQ directory path
-RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s3/lib/daq'" >> ~/.bashrc
+RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s3/lib/daq'" >> /root/.bashrc
 
 # Copy custom rules and scripts
 COPY local.rules /usr/local/snort/etc/snort/
