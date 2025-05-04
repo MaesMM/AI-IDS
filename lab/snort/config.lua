@@ -270,6 +270,19 @@ rate_filter =
 --packet_capture = { }
 --file_log = { }
 
+outputs = {
+    log_console = {
+        enabled = true,
+        default_mode = 'alert_fast',
+    },
+}
+
+loggers = {
+    console = {
+        default = 'alert_fast',
+    },
+}
+
 ---------------------------------------------------------------------------
 -- 8. configure tweaks
 ---------------------------------------------------------------------------
