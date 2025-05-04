@@ -7,7 +7,7 @@ Dans un terminal entrer :
 ```bash
 git clone [https://github.com/MaesMM/AI-IDS.git](https://github.com/MaesMM/AI-IDS.git)
 cd AI-IDS/lab/snort
-docker-compose up -d
+docker-compose up
 ```
 
 Pour se connecter au container : 
@@ -21,9 +21,6 @@ docker exec -it <container name> bash --login
 
 ![Architecture](Architecture.png)
 
-## Lancement de snort dans la console
+## Lancement de Snort dans la console
 
-```bash
-cd /usr/local/snort/etc/snort
-snort -c snort.lua -v -A console
-```
+Par défaut les alerte Snort s’affiche directement dans le terminal utilisé pour lancer le container
