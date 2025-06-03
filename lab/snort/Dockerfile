@@ -22,7 +22,7 @@ RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https:
     g++ \
     flex \
     bison \
-    libpcap-dev \
+    libcap2 \
     libpcre2-dev \
     libdnet-dev \
     libdumbnet-dev \
@@ -46,6 +46,7 @@ RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https:
     bash \
     libreadline-dev \
     libncurses-dev \
+    net-tools\
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
@@ -62,6 +63,7 @@ RUN git clone https://github.com/snort3/libdaq.git /tmp/libdaq && \
 
 # Add libdaq library path to the dynamic linker
 RUN echo "/usr/local/lib/daq_s3/lib" | tee /etc/ld.so.conf.d/daq.conf && ldconfig
+RUN export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/daq_s3/lib/pkgconfig
 
 # Download and install libml
 RUN git clone https://github.com/snort3/libml.git /tmp/libml && \
@@ -107,6 +109,5 @@ RUN rm /usr/local/snort/etc/snort/snort.lua
 COPY config.lua /usr/local/snort/etc/snort/snort.lua
 RUN pwd
 COPY entrypoint.sh . 
-
 RUN chmod +x /usr/local/entrypoint.sh
 CMD ["/usr/local/entrypoint.sh"]

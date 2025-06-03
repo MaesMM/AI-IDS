@@ -15,7 +15,7 @@ ack = IP(src=client_ip, dst=server_ip) / TCP(sport=client_port, dport=server_por
 
 # 4. HTTP GET con SQL Injection (Client -> Server)
 http_get = IP(src=client_ip, dst=server_ip) / TCP(sport=client_port, dport=server_port, flags='PA', seq=syn.seq + 1, ack=syn_ack.seq + 1) / \
-    "GET /php/admin_notification.php?foo=1%27%20OR%202=3%2D%2D-- HTTP/1.1\r\nHost: 172.16.10.120\r\n\r\n"
+    "GET /php/admin_notification.php?foo=1'%20OR%201=1---- HTTP/1.1\r\nHost: 172.16.10.120\r\n\r\n"
 
 # 5. HTTP Response (Server -> Client) - fittizio
 http_response = IP(src=server_ip, dst=client_ip) / TCP(sport=server_port, dport=client_port, flags='PA', seq=syn_ack.seq + 1, ack=syn.seq + len(http_get[Raw]), window=1026) / \

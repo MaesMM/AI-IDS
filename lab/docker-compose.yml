@@ -6,23 +6,24 @@ services:
       context: ./snort
       dockerfile: Dockerfile
     container_name: snort
+    privileged: true
     volumes:
       - ./snort/host-volume:/usr/local/snort/etc/snort/docker-volume:ro #rules 
     networks:
       - private_network
     stdin_open: true
 
-  attaquant:
+  attacker:
     build:
-       context: ./attaquant
+       context: ./attacker
        dockerfile: Dockerfile
-    container_name: kali
+    container_name: Mallory
     networks:
       - private_network
     tty: true
     stdin_open: true
 
-web:
+  web:
     image: bkimminich/juice-shop
     container_name: juice
     networks:
