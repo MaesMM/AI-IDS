@@ -22,7 +22,7 @@ services:
     tty: true
     stdin_open: true
 
-web:
+  web:
     image: bkimminich/juice-shop
     container_name: juice
     networks:
