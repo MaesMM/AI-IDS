@@ -4,7 +4,7 @@ server:
 
   basePath: ''
 
-  baseUrl: 'http://localhost:3000' # used for CSAF, e.g. https://example.com
+  baseUrl: 'http://localhost:80' # used for CSAF, e.g. https://example.com
 
 application:
 

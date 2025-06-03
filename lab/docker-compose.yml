@@ -12,19 +12,23 @@ services:
       - private_network
     stdin_open: true
 
-  kali:
-    image: kalilinux/kali-rolling
+  attaquant:
+    build:
+       context: ./attaquant
+       dockerfile: Dockerfile
     container_name: kali
     networks:
       - private_network
     tty: true
     stdin_open: true
 
-  web:
+web:
     image: bkimminich/juice-shop
     container_name: juice
     networks:
       - private_network
+    ports:
+      - 80:80
     volumes:
       - ./web/default.yml:/juice-shop/config/myConfig.yml
     restart: always
