@@ -24,7 +24,6 @@ RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https:
     dnsutils \
     nmap \
     arjun \
-    # dalfox \
     dnsenum \
     sqlmap \
     wafw00f \
