@@ -5,49 +5,15 @@ FROM ubuntu:20.04
 # Set environment variable to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update packages and install all necessary dependencies
-RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https::Verify-Peer=false" install ca-certificates -y && \
-    update-ca-certificates && \
-    apt -o "Acquire::https::Verify-Peer=false" install -y \
-    iproute2 \  
-    tzdata \
-    python3 \
-    python3-venv \
-    python3-pip \
-    build-essential \
-    cmake \
-    g++ \
-    flex \
-    bison \
-    libcap2 \
-    libpcre2-dev \
-    libdnet-dev \
-    libdumbnet-dev \
-    libluajit-5.1-dev \
-    libtins-dev \
-    libhwloc-dev \
-    zlib1g-dev \
-    pkg-config \
-    libssl-dev \
-    git \
-    wget \
-    liblzma-dev \
-    libnghttp2-dev \
-    uuid-dev \
-    libmnl-dev \
-    nano \
-    vim \
-    iputils-ping \
-    curl \
-    tcpdump \
-    bash \
-    libreadline-dev \
-    libncurses-dev \
-    net-tools\
-    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /usr/local
+
+# Update packages and install all necessary dependencies by using ./install-deps.sh script
+COPY install_deps.sh /usr/local/install_deps.sh
+RUN chmod +x /usr/local/install_deps.sh
+RUN /usr/local/install_deps.sh
+
 
     
 # Download and install libdaq
@@ -102,7 +68,6 @@ RUN git clone https://github.com/snort3/snort3.git /tmp/snort3 && \
 RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s3/lib/daq'" >> /root/.bashrc
 
 # Copy custom rules and scripts
-COPY local.rules /usr/local/snort/etc/snort/
 COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
 RUN rm /usr/local/snort/etc/snort/snort.lua
 COPY config.lua /usr/local/snort/etc/snort/snort.lua
