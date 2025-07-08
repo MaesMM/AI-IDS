@@ -12,6 +12,8 @@ services:
     networks:
       - private_network
     stdin_open: true
+    environment:
+      - PATH=$PATH:/usr/local/snort/bin
 
   attacker:
     build:

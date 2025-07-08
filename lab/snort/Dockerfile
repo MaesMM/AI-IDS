@@ -2,7 +2,6 @@
 # Start from a base image, like Ubuntu 20.04
 FROM ubuntu:20.04
 
-
 # Set environment variable to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 # ENV PKGCONFIG_PATH=/usr/lib/pkgconfig:/usr/lib32/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/lib32/pkgconfig
@@ -52,6 +51,7 @@ RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https:
 # Set the working directory
 WORKDIR /usr/local
 
+    
 # Download and install libdaq
 RUN git clone https://github.com/snort3/libdaq.git /tmp/libdaq && \
     cd /tmp/libdaq && \
@@ -61,9 +61,13 @@ RUN git clone https://github.com/snort3/libdaq.git /tmp/libdaq && \
     make install && \
     rm -rf /tmp/libdaq
 
+#--enable-pcap-module --enable-bpf-module --enable-dump-module
+
 # Add libdaq library path to the dynamic linker
 RUN echo "/usr/local/lib/daq_s3/lib" | tee /etc/ld.so.conf.d/daq.conf && ldconfig
 RUN export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/daq_s3/lib/pkgconfig
+
+# RUN apt -o "Acquire::https::Verify-Peer=false" install -y libcap2 
 
 # Download and install libml
 RUN git clone https://github.com/snort3/libml.git /tmp/libml && \
@@ -107,7 +111,11 @@ COPY local.rules /usr/local/snort/etc/snort/
 COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
 RUN rm /usr/local/snort/etc/snort/snort.lua
 COPY config.lua /usr/local/snort/etc/snort/snort.lua
-RUN pwd
+COPY snort.conf /usr/local/snort/etc/snort/snort.conf
 COPY entrypoint.sh . 
 RUN chmod +x /usr/local/entrypoint.sh
-CMD ["/usr/local/entrypoint.sh"]
+
+
+# Lauch IDS
+CMD ["/usr/local/snort/bin/snort", "-c", "/usr/local/snort/etc/snort/snort.lua", "-l", "/var/log/snort", "--daq-dir", "/usr/local/lib/daq_s3/lib/daq", "-i", "eth0", "-A", "csv"]
+

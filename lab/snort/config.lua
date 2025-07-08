@@ -192,7 +192,6 @@ ips =
     variables = default_variables,
     rules = [[
         include /usr/local/snort/etc/snort/local.rules
-        include /usr/local/snort/etc/snort/docker-volume/snort3-community.rules
     ]]
 }
 
@@ -269,19 +268,6 @@ rate_filter =
 -- additional logs
 --packet_capture = { }
 --file_log = { }
-
-outputs = {
-    log_console = {
-        enabled = true,
-        default_mode = 'alert_fast',
-    },
-}
-
-loggers = {
-    console = {
-        default = 'alert_fast',
-    },
-}
 
 ---------------------------------------------------------------------------
 -- 8. configure tweaks
