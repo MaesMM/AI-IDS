@@ -12,6 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https::Verify-Peer=false" install ca-certificates -y && \
     update-ca-certificates && \
     apt -o "Acquire::https::Verify-Peer=false" install -y \
+    iproute2 \  
     tzdata \
     python3 \
     python3-venv \
@@ -112,10 +113,10 @@ COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
 RUN rm /usr/local/snort/etc/snort/snort.lua
 COPY config.lua /usr/local/snort/etc/snort/snort.lua
 COPY snort.conf /usr/local/snort/etc/snort/snort.conf
-COPY entrypoint.sh . 
+COPY entrypoint.sh .
 RUN chmod +x /usr/local/entrypoint.sh
 
-
 # Lauch IDS
-CMD ["/usr/local/snort/bin/snort", "-c", "/usr/local/snort/etc/snort/snort.lua", "-l", "/var/log/snort", "--daq-dir", "/usr/local/lib/daq_s3/lib/daq", "-i", "eth0", "-A", "csv"]
-
+CMD ["/bin/bash", "./entrypoint.sh"]
+# CMD ["/usr/local/snort/bin/snort", "-c", "/usr/local/snort/etc/snort/snort.lua", "-l", "/var/log/snort", "--daq-dir", "/usr/local/lib/daq_s3/lib/daq", "-i", "eth0", "-A", "csv"]
+# CMD ["ip", "link," "set", "eth0", "promisc", "on"]

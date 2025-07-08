@@ -1,8 +1,10 @@
 #!/bin/bash
-cd /usr/local/src/libml/examples/classifier
-python3 -m venv venv
-source venv/bin/activate    
-pip install scapy
-python3 pcapgen.py
-/usr/local/snort/bin/snort -c /usr/local/snort/etc/snort/snort.lua -i eth0 --daq-dir /usr/local/lib/daq_s3/lib/daq --warn-all &
+# cd /usr/local/src/libml/examples/classifier
+# python3 -m venv venv
+# source venv/bin/activate    
+# pip install scapy
+# python3 pcapgen.py
+# /usr/local/snort/bin/snort -c /usr/local/snort/etc/snort/snort.lua -i eth0 --daq-dir /usr/local/lib/daq_s3/lib/daq --warn-all &
+ip link set eth0 promisc on 
+/usr/local/snort/bin/snort -c /usr/local/snort/etc/snort/snort.lua -l /var/log/snort --daq-dir /usr/local/lib/daq_s3/lib/daq -i eth0 -A csv
 exec /bin/bash
