@@ -4,53 +4,16 @@ FROM ubuntu:20.04
 
 # Set environment variable to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
-# ENV PKGCONFIG_PATH=/usr/lib/pkgconfig:/usr/lib32/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/lib32/pkgconfig
 
-# RUN echo -e "// Do not verify peer certificate\nAcquire::https::Verify-Peer \"false\";\n// Do not verify that certificate name matches server name\nAcquire::https::Verify-Host \"false\";"  > /etc/apt/apt.conf.d/
-
-# Update packages and install all necessary dependencies
-RUN apt -o "Acquire::https::Verify-Peer=false" update && apt -o "Acquire::https::Verify-Peer=false" install ca-certificates -y && \
-    update-ca-certificates && \
-    apt -o "Acquire::https::Verify-Peer=false" install -y \
-    iproute2 \  
-    tzdata \
-    python3 \
-    python3-venv \
-    python3-pip \
-    build-essential \
-    cmake \
-    g++ \
-    flex \
-    bison \
-    libcap2 \
-    libpcre2-dev \
-    libdnet-dev \
-    libdumbnet-dev \
-    libluajit-5.1-dev \
-    libtins-dev \
-    libhwloc-dev \
-    zlib1g-dev \
-    pkg-config \
-    libssl-dev \
-    git \
-    wget \
-    liblzma-dev \
-    libnghttp2-dev \
-    uuid-dev \
-    libmnl-dev \
-    nano \
-    vim \
-    iputils-ping \
-    curl \
-    tcpdump \
-    bash \
-    libreadline-dev \
-    libncurses-dev \
-    net-tools\
-    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /usr/local
+
+# Update packages and install all necessary dependencies by using ./install-deps.sh script
+COPY install_deps.sh /usr/local/install_deps.sh
+RUN chmod +x /usr/local/install_deps.sh
+RUN /usr/local/install_deps.sh
+
 
     
 # Download and install libdaq
@@ -62,13 +25,10 @@ RUN git clone https://github.com/snort3/libdaq.git /tmp/libdaq && \
     make install && \
     rm -rf /tmp/libdaq
 
-#--enable-pcap-module --enable-bpf-module --enable-dump-module
 
 # Add libdaq library path to the dynamic linker
 RUN echo "/usr/local/lib/daq_s3/lib" | tee /etc/ld.so.conf.d/daq.conf && ldconfig
 RUN export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/daq_s3/lib/pkgconfig
-
-# RUN apt -o "Acquire::https::Verify-Peer=false" install -y libcap2 
 
 # Download and install libml
 RUN git clone https://github.com/snort3/libml.git /tmp/libml && \
@@ -108,7 +68,6 @@ RUN git clone https://github.com/snort3/snort3.git /tmp/snort3 && \
 RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s3/lib/daq'" >> /root/.bashrc
 
 # Copy custom rules and scripts
-COPY local.rules /usr/local/snort/etc/snort/
 COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
 RUN rm /usr/local/snort/etc/snort/snort.lua
 COPY config.lua /usr/local/snort/etc/snort/snort.lua
@@ -117,5 +76,3 @@ RUN chmod +x /usr/local/entrypoint.sh
 
 # Lauch IDS
 CMD ["/bin/bash", "./entrypoint.sh"]
-# CMD ["/usr/local/snort/bin/snort", "-c", "/usr/local/snort/etc/snort/snort.lua", "-l", "/var/log/snort", "--daq-dir", "/usr/local/lib/daq_s3/lib/daq", "-i", "eth0", "-A", "csv"]
-# CMD ["ip", "link," "set", "eth0", "promisc", "on"]
