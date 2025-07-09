@@ -79,7 +79,7 @@ model.summary()
 
 model.fit(np.asarray(X).astype(np.float32),
           np.asarray(Y).astype(np.float32),
-          epochs=100, batch_size=1)
+          epochs=5, batch_size=1)
 
 #
 # Save Model
