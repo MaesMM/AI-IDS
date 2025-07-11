@@ -71,10 +71,13 @@ RUN echo "alias snort='/usr/local/snort/bin/snort --daq-dir /usr/local/lib/daq_s
 COPY pcapgen.py /usr/local/src/libml/examples/classifier/pcapgen.py
 RUN rm /usr/local/snort/etc/snort/snort.lua
 COPY snort.lua /usr/local/snort/etc/snort/snort.lua
+
+WORKDIR /root
+
 COPY entrypoint.sh .
 COPY snortml.sh .
 RUN chmod +x snortml.sh
-RUN chmod +x /usr/local/entrypoint.sh
+RUN chmod +x entrypoint.sh
 
-# Lauch IDS
+# Launch IDS
 CMD ["/bin/bash", "./entrypoint.sh"]
