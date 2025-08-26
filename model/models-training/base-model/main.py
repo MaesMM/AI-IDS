@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from dataProcess import *
+from dataProcess import 
 from model import *
 import os, sys, argparse
 import pandas as pd

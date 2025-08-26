@@ -11,7 +11,7 @@ services:
     container_name: snort
     privileged: true
     volumes:
-      - ./snort/host-volume:/usr/local/snort/etc/snort/docker-volume:ro #rules 
+      - ./snort/host-volume:/usr/local/shared:ro #rules 
     networks:
       - private_network
     stdin_open: true

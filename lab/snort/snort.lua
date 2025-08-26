@@ -192,9 +192,12 @@ ips =
     variables = default_variables,
 
     rules = [[
-        include /usr/local/snort/etc/snort/docker-volume/snort3-community.rules
+        include /usr/local/shared/snort3-community.rules
+        include /usr/local/shared/rules/snort3-sql.rules 
         ]]
-    --include /usr/local/snort/etc/snort/local.rules
+
+        --include /usr/local/snort/etc/snort/local.rules
+        -- include /usr/local/snort/etc/snort/docker-volume/snort3-community.rules
 }
 
 -- use these to configure additional rule actions
